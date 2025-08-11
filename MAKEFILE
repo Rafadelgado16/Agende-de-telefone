@@ -1,0 +1,36 @@
+# COmpilador 
+CC = gcc
+
+# Flags de compilação
+CFLAGS = -Wall -Wextra -I./Include main.c CFile/*.c -o EDA
+
+
+# Diretórios
+SRC_DIR = C-Code
+HDR_DIR = Include
+OBJ_DIR = obj
+BIN_DIR = bin
+
+# Arquivos fonte e objetos
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+TARGET = $(BIN_DIR)/EDA
+
+# Regra padrão
+all: $(TARGET)
+
+# Ligação dos objetos para criar o executavel
+$(TARGET): $(OBJS)
+		@mkdir -p $(BIN_DIR)
+		$(CC) $(CFLAGS) -o $@ $^
+
+# Compilação de cada arquivo fonte
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+		@mkdir -p $(OBJ_DIR)
+		$(CC) $(CFLAGS) -c $< -0 $@
+
+# Limpeza
+clean: 
+		rm -rf $(OBJ_DIR) $(BIN_DIR)
+
+.PHONY: all clean
